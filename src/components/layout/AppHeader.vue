@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import AppIcon from '../ui/AppIcon.vue'
 import ThemeToggle from '../ui/ThemeToggle.vue'
 import { usePortfolio } from '@/composables/usePortfolio'
+import { useActiveSection } from '@/composables/useActiveSection'
 
 const { profile } = usePortfolio()
 const calendlyUrl = computed(
@@ -10,12 +11,14 @@ const calendlyUrl = computed(
 )
 
 const links = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Work', href: '#work' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '#about', id: 'about' },
+  { label: 'Experience', href: '#experience', id: 'experience' },
+  { label: 'Work', href: '#work', id: 'work' },
+  { label: 'Skills', href: '#skills', id: 'skills' },
+  { label: 'Contact', href: '#contact', id: 'contact' },
 ]
+
+const { activeId } = useActiveSection(links.map((l) => l.id))
 
 const menuOpen = ref(false)
 const scrolled = ref(false)
@@ -64,10 +67,18 @@ const close = () => {
           :key="link.href"
           :href="link.href"
           :data-testid="`nav-${link.label.toLowerCase()}`"
+          :aria-current="activeId === link.id ? 'true' : undefined"
           data-cursor
-          class="rounded-lg px-3 py-2 font-mono text-xs tracking-wide text-muted uppercase transition-colors hover:text-accent"
-          >{{ link.label }}</a
+          class="nav-link relative rounded-lg px-3 py-2 font-mono text-xs tracking-wide uppercase transition-colors"
+          :class="activeId === link.id ? 'text-accent' : 'text-muted hover:text-accent'"
         >
+          {{ link.label }}
+          <span
+            class="nav-dot pointer-events-none absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent transition-all duration-300"
+            :class="activeId === link.id ? 'opacity-100' : 'opacity-0'"
+            aria-hidden="true"
+          />
+        </a>
       </nav>
 
       <div class="flex items-center gap-2">
@@ -113,7 +124,9 @@ const close = () => {
             v-for="link in links"
             :key="link.href"
             :href="link.href"
-            class="rounded-lg px-3 py-3 text-base font-medium text-muted transition-colors hover:bg-surface hover:text-fg"
+            :aria-current="activeId === link.id ? 'true' : undefined"
+            class="rounded-lg px-3 py-3 text-base font-medium transition-colors hover:bg-surface hover:text-fg"
+            :class="activeId === link.id ? 'text-accent' : 'text-muted'"
             @click="close"
             >{{ link.label }}</a
           >

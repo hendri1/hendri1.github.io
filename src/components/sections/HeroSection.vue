@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { gsap } from 'gsap'
 import AppIcon from '../ui/AppIcon.vue'
 import SocialLinks from '../ui/SocialLinks.vue'
 import DecodeText from '../ui/DecodeText.vue'
+import CountUp from '../ui/CountUp.vue'
 import ParticleField from '../fx/ParticleField.vue'
 import { usePortfolio } from '@/composables/usePortfolio'
 
@@ -21,16 +23,54 @@ const fmt = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'Asia/Jakarta',
 })
 const updateClock = () => (clock.value = fmt.format(new Date()))
+
+// Boot/online choreography on first paint.
+const root = ref<HTMLElement | null>(null)
+const booted = ref(false)
+const status = ref('BOOT')
+let ctx: ReturnType<typeof gsap.context> | null = null
+
 onMounted(() => {
   updateClock()
   timer = setInterval(updateClock, 1000)
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (reduce || !root.value) {
+    booted.value = true
+    status.value = 'ONLINE'
+    return
+  }
+
+  ctx = gsap.context(() => {
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      onComplete: () => {
+        booted.value = true
+        status.value = 'ONLINE'
+      },
+    })
+    tl.from('[data-boot-hud]', { autoAlpha: 0, y: -8, duration: 0.5, stagger: 0.1 })
+      .call(() => (status.value = 'LINK'), undefined, 0.15)
+      .call(() => (status.value = 'SYNC'), undefined, 0.45)
+      .from('[data-boot="kicker"]', { autoAlpha: 0, y: 10, duration: 0.5 }, '-=0.25')
+      .from('[data-boot="name"]', { autoAlpha: 0, y: 26, duration: 0.75 }, '-=0.1')
+      .from('[data-boot="badge"]', { autoAlpha: 0, y: 10, duration: 0.4 }, '-=0.4')
+      .from('[data-boot="tagline"]', { autoAlpha: 0, y: 10, duration: 0.5 }, '-=0.25')
+      .from('[data-boot="cta"] > *', { autoAlpha: 0, y: 14, duration: 0.45, stagger: 0.09 }, '-=0.2')
+      .from('[data-boot="stats"] > *', { autoAlpha: 0, y: 18, duration: 0.5, stagger: 0.07 }, '-=0.1')
+  }, root.value)
 })
-onUnmounted(() => clearInterval(timer))
+
+onUnmounted(() => {
+  clearInterval(timer)
+  ctx?.revert()
+})
 </script>
 
 <template>
   <section
     id="top"
+    ref="root"
     data-testid="hero"
     class="relative flex min-h-screen flex-col justify-center overflow-hidden px-4 pt-24 pb-16 sm:px-8"
   >
@@ -63,13 +103,19 @@ onUnmounted(() => clearInterval(timer))
       class="pointer-events-none absolute inset-x-4 top-20 flex justify-between font-mono text-[0.65rem] tracking-widest text-muted uppercase sm:inset-x-8"
       aria-hidden="true"
     >
-      <span>SYS // PORTFOLIO.v1</span>
-      <span class="text-accent">◢ ONLINE</span>
+      <span data-boot-hud>SYS // PORTFOLIO.v1</span>
+      <span
+        data-boot-hud
+        data-testid="hero-status"
+        class="text-accent"
+        :class="{ 'animate-pulse': !booted }"
+        >◢ {{ status }}</span
+      >
     </div>
 
     <div class="relative z-10 mx-auto w-full max-w-6xl">
       <div class="flex items-start justify-between gap-4">
-        <p class="kicker flex items-center gap-2">
+        <p data-boot="kicker" class="kicker flex items-center gap-2">
           <span class="inline-block h-px w-8 bg-accent" aria-hidden="true" />
           <DecodeText text="01 / Senior Frontend Engineer · Mekari" />
         </p>
@@ -80,6 +126,7 @@ onUnmounted(() => clearInterval(timer))
       </div>
 
       <h1
+        data-boot="name"
         data-testid="hero-name"
         class="glitch glow mt-8 font-semibold tracking-tight uppercase"
         :data-text="profile.name"
@@ -90,6 +137,7 @@ onUnmounted(() => clearInterval(timer))
 
       <p
         v-if="profile.availableForWork"
+        data-boot="badge"
         data-testid="availability-badge"
         class="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-wide text-muted uppercase"
       >
@@ -100,11 +148,11 @@ onUnmounted(() => clearInterval(timer))
         Open to senior frontend roles
       </p>
 
-      <p data-testid="hero-tagline" class="mt-5 max-w-xl text-lg text-muted sm:text-xl">
+      <p data-boot="tagline" data-testid="hero-tagline" class="mt-5 max-w-xl text-lg text-muted sm:text-xl">
         {{ profile.tagline }}
       </p>
 
-      <div class="mt-8 flex flex-wrap items-center gap-3">
+      <div data-boot="cta" class="mt-8 flex flex-wrap items-center gap-3">
         <a
           v-magnetic="0.4"
           :href="calendlyUrl"
@@ -131,11 +179,14 @@ onUnmounted(() => clearInterval(timer))
       </div>
 
       <dl
+        data-boot="stats"
         data-testid="hero-stats"
         class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line lg:grid-cols-4"
       >
         <div v-for="stat in profile.highlights" :key="stat.label" class="hud bg-bg p-5">
-          <dt class="text-2xl font-semibold text-fg sm:text-3xl">{{ stat.value }}</dt>
+          <dt class="text-2xl font-semibold text-fg sm:text-3xl">
+            <CountUp :value="stat.value" />
+          </dt>
           <dd class="mt-1 font-mono text-xs tracking-wide text-muted uppercase">{{ stat.label }}</dd>
         </div>
       </dl>

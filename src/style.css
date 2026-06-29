@@ -196,6 +196,7 @@
     border-radius: 9999px;
     background: var(--color-accent);
     box-shadow: 0 0 10px var(--color-accent);
+    transition: scale 0.18s ease;
   }
   .cursor-ring {
     width: 30px;
@@ -206,7 +207,8 @@
       width 0.25s ease,
       height 0.25s ease,
       border-radius 0.25s ease,
-      background-color 0.25s ease;
+      background-color 0.25s ease,
+      scale 0.18s ease;
   }
   /* crosshair ticks */
   .cursor-ring::before,
@@ -234,6 +236,38 @@
     height: 54px;
     border-radius: 6px;
     background: color-mix(in oklab, var(--color-accent) 8%, transparent);
+  }
+  /* Click feedback — the reticle clenches, the dot flares. */
+  .cursor-ring.is-pressed {
+    scale: 0.78;
+    background: color-mix(in oklab, var(--color-accent) 18%, transparent);
+  }
+  .cursor-dot.is-pressed {
+    scale: 2.1;
+  }
+  /* Verb label trailing the reticle ("copy", "open mail"). */
+  .cursor-ring.has-label {
+    width: 54px;
+    height: 54px;
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--color-accent) 10%, transparent);
+  }
+  .cursor-label {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 10px);
+    translate: 0 -50%;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 0 14px color-mix(in oklab, var(--color-accent) 60%, transparent);
   }
   @media (hover: none), (pointer: coarse) {
     .cursor-dot,
@@ -280,6 +314,35 @@
   color: var(--color-accent2);
   transform: translate(2px, 0);
   mix-blend-mode: screen;
+}
+
+/* Tactile press — interactive elements give a hair under the pointer. Uses the
+   independent `scale` property so it composites with any GSAP `transform`
+   (magnetic/parallax) instead of being clobbered by it. */
+@media (prefers-reduced-motion: no-preference) and (pointer: fine) {
+  a[data-cursor],
+  button {
+    transition: scale 0.12s ease;
+  }
+  a[data-cursor]:active,
+  button:active {
+    scale: 0.97;
+  }
+}
+
+/* Theme switch — clip-path circle wipe (driven by ThemeToggle.vue).
+   Suppress the browser's default root cross-fade so only our circle plays;
+   the new (incoming) theme sits on top and is revealed by the expanding clip. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 9999;
 }
 
 @media (prefers-reduced-motion: reduce) {
