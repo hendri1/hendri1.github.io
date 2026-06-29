@@ -2,13 +2,15 @@
 import SectionHeading from '../ui/SectionHeading.vue'
 import TagBadge from '../ui/TagBadge.vue'
 import AppIcon from '../ui/AppIcon.vue'
+import ParallaxText from '../fx/ParallaxText.vue'
 import { usePortfolio } from '@/composables/usePortfolio'
 
 const { experiences } = usePortfolio()
 </script>
 
 <template>
-  <section id="experience" data-testid="experience" class="mx-auto max-w-6xl px-4 py-24 sm:px-8">
+  <section id="experience" data-testid="experience" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
+    <ParallaxText text="CAREER" position="-top-12 right-0" :amount="0.6" />
     <SectionHeading
       eyebrow="03 / Experience"
       title="A decade of shipping frontend"

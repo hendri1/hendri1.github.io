@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import SectionHeading from '../ui/SectionHeading.vue'
 import TagBadge from '../ui/TagBadge.vue'
+import ParallaxText from '../fx/ParallaxText.vue'
 import { usePortfolio } from '@/composables/usePortfolio'
 
 const { profile } = usePortfolio()
 </script>
 
 <template>
-  <section id="about" data-testid="about" class="mx-auto max-w-6xl px-4 py-24 sm:px-8">
+  <section id="about" data-testid="about" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
+    <ParallaxText text="ABOUT" position="-top-10 -left-4" :amount="0.55" />
     <SectionHeading eyebrow="02 / About" title="Engineer, architect, mentor" />
 
     <div class="grid gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-3">

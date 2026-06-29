@@ -60,7 +60,9 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
+    /* clip (not hidden) so parallax watermarks can bleed without creating a
+       scroll container that would break `position: sticky` stacking. */
+    overflow-x: clip;
   }
 
   ::selection {

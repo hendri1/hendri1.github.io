@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import SectionHeading from '../ui/SectionHeading.vue'
+import ParallaxText from '../fx/ParallaxText.vue'
 import { usePortfolio } from '@/composables/usePortfolio'
 
 const { skillGroups, education } = usePortfolio()
 </script>
 
 <template>
-  <section id="skills" data-testid="skills" class="mx-auto max-w-6xl px-4 py-24 sm:px-8">
+  <section id="skills" data-testid="skills" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
+    <ParallaxText text="STACK" position="-top-10 -left-4" :amount="0.55" />
     <SectionHeading
       eyebrow="05 / Skills"
       title="Tools of the trade"

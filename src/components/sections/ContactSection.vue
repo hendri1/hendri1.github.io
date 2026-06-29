@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import SectionHeading from '../ui/SectionHeading.vue'
 import AppIcon from '../ui/AppIcon.vue'
+import ParallaxText from '../fx/ParallaxText.vue'
 import { usePortfolio } from '@/composables/usePortfolio'
 
 const { profile } = usePortfolio()
@@ -27,7 +28,8 @@ const calendlyEmbedUrl = computed(() => {
 </script>
 
 <template>
-  <section id="contact" data-testid="contact" class="mx-auto max-w-6xl px-4 py-24 sm:px-8">
+  <section id="contact" data-testid="contact" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
+    <ParallaxText text="CONTACT" position="-top-12 right-0" :amount="0.6" />
     <SectionHeading
       eyebrow="06 / Contact"
       title="Let's build something"
