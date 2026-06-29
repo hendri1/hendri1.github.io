@@ -1,5 +1,14 @@
 import { DateRange } from '@/utils/dateRange'
-import type { Profile, Experience, Project, SkillGroup, Education } from '@/types/portfolio'
+import type {
+  Profile,
+  Experience,
+  Project,
+  SkillGroup,
+  Education,
+  Service,
+  ProcessStep,
+  Client,
+} from '@/types/portfolio'
 
 /**
  * Source of truth for the portfolio content, transcribed from Hendri's CV.
@@ -13,6 +22,9 @@ export const profile: Profile = {
   company: 'Mekari',
   companyUrl: 'https://www.mekari.com',
   location: 'Bandung, Indonesia',
+  valueProp: 'Frontend architecture that scales with your team.',
+  valuePropSub:
+    'I help product teams ship maintainable web apps — micro-frontends, design systems, and the engineering culture to keep them fast as they grow.',
   tagline: 'I build scalable web apps, micro-frontends, and design systems.',
   summary:
     'Senior Frontend Engineer based in Bandung with around 10 years of experience building and scaling web applications. At Mekari I lead frontend architecture and large-scale migrations — micro-frontends with Module Federation, shared design systems (Mekari Pixel), and engineering quality. I care about maintainable architecture, design systems, testing, and growing the engineers around me. With a background in Industrial Engineering, I am especially drawn to digitalizing industry and ERP.',
@@ -295,6 +307,95 @@ export const projects: Project[] = [
     featured: true,
     order: 4,
   },
+]
+
+export const services: Service[] = [
+  {
+    id: 'architecture',
+    icon: 'layers',
+    title: 'Frontend Architecture',
+    summary:
+      'Designing frontends that stay fast and maintainable as teams and codebases grow — from RFC to rollout.',
+    capabilities: [
+      'Architecture RFCs & migration strategy',
+      'Module Federation & monorepo setup',
+      'Performance & build pipelines',
+    ],
+  },
+  {
+    id: 'design-systems',
+    icon: 'grid',
+    title: 'Design Systems',
+    summary:
+      'Shared component libraries that keep products consistent and ship features faster across teams.',
+    capabilities: [
+      'Component libraries & tokens',
+      'Storybook documentation',
+      'CDN-distributed shared UI',
+    ],
+  },
+  {
+    id: 'micro-frontends',
+    icon: 'git-branch',
+    title: 'Micro-Frontends & Migration',
+    summary:
+      'Decoupling large applications into independently deployable modules — and modernising legacy code along the way.',
+    capabilities: [
+      'Module Federation rollout',
+      'Legacy-to-modern migration',
+      'Independent build & deploy',
+    ],
+  },
+  {
+    id: 'leadership',
+    icon: 'users',
+    title: 'Technical Leadership',
+    summary:
+      'Growing engineering teams through mentoring, code quality, and a culture of testing and documentation.',
+    capabilities: [
+      'Mentoring & onboarding',
+      'Testing standards (80%+ coverage)',
+      'Engineering guidelines & reviews',
+    ],
+  },
+]
+
+export const process: ProcessStep[] = [
+  {
+    id: 'discover',
+    title: 'Discover',
+    description:
+      'Understand the product, the team, and the constraints. Map what hurts today and what success looks like.',
+  },
+  {
+    id: 'architect',
+    title: 'Architect',
+    description:
+      'Propose a clear technical direction — written down as an RFC the whole team can align on before any code.',
+  },
+  {
+    id: 'build',
+    title: 'Build',
+    description:
+      'Ship incrementally with tests and documentation, keeping the product shippable at every step.',
+  },
+  {
+    id: 'enable',
+    title: 'Enable',
+    description:
+      'Hand over with guidelines, Storybook, and mentoring so the team keeps moving fast without me.',
+  },
+]
+
+/** Companies worked with — social proof for the trusted-by strip. */
+export const clients: Client[] = [
+  { name: 'Mekari', url: 'https://www.mekari.com' },
+  { name: 'Ralali.com', url: 'https://www.ralali.com' },
+  { name: 'Labtek Indie' },
+  { name: 'eBdesk Teknologi' },
+  { name: 'Terakorp' },
+  { name: 'Nutrifood' },
+  { name: '9cv9' },
 ]
 
 export const skillGroups: SkillGroup[] = [

@@ -10,7 +10,7 @@ const { profile } = usePortfolio()
 <template>
   <section id="about" data-testid="about" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
     <ParallaxText text="ABOUT" position="-top-10 -left-4" :amount="0.55" />
-    <SectionHeading eyebrow="02 / About" title="Engineer, architect, mentor" />
+    <SectionHeading eyebrow="05 / About" title="Engineer, architect, mentor" />
 
     <div class="grid gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-3">
       <div class="bg-bg p-7 lg:col-span-2 lg:p-9">

@@ -12,7 +12,7 @@ const { experiences } = usePortfolio()
   <section id="experience" data-testid="experience" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
     <ParallaxText text="CAREER" position="-top-12 right-0" :amount="0.6" />
     <SectionHeading
-      eyebrow="03 / Experience"
+      eyebrow="04 / Track record"
       title="A decade of shipping frontend"
       subtitle="From hospital systems and analytics dashboards to micro-frontends and design systems at scale."
     />

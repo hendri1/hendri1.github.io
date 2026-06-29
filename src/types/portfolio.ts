@@ -30,6 +30,10 @@ export interface Profile {
   readonly company: string
   readonly companyUrl: string
   readonly location: string
+  /** Short, client-facing value proposition — the dominant hero headline. */
+  readonly valueProp: string
+  /** Supporting sentence under the value proposition. */
+  readonly valuePropSub: string
   readonly tagline: string
   readonly summary: string
   readonly availableForWork: boolean
@@ -37,6 +41,32 @@ export interface Profile {
   readonly socials: readonly SocialLink[]
   readonly languages: readonly Language[]
   readonly softSkills: readonly string[]
+}
+
+// --- Services & process (business-profile framing) -------------------------
+
+/**
+ * A capability offered to clients/teams. `icon` keys into the shared icon set.
+ */
+export interface Service {
+  readonly id: string
+  readonly icon: string
+  readonly title: string
+  readonly summary: string
+  readonly capabilities: readonly string[]
+}
+
+/** One step in the "how I work" engagement flow. */
+export interface ProcessStep {
+  readonly id: string
+  readonly title: string
+  readonly description: string
+}
+
+/** A company worked with, used for the social-proof / trusted-by strip. */
+export interface Client {
+  readonly name: string
+  readonly url?: string
 }
 
 // --- Experience ------------------------------------------------------------

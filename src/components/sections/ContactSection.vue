@@ -49,9 +49,9 @@ async function copyEmail() {
   <section id="contact" data-testid="contact" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
     <ParallaxText text="CONTACT" position="-top-12 right-0" :amount="0.6" />
     <SectionHeading
-      eyebrow="06 / Contact"
-      title="Let's build something"
-      subtitle="Book a slot that suits you, or reach out directly — I usually reply within a day."
+      eyebrow="07 / Contact"
+      title="Let's work together"
+      subtitle="Have a frontend challenge or a team to scale? Book a slot that suits you, or reach out directly — I usually reply within a day."
     />
 
     <!-- oversized email statement + copy affordance -->

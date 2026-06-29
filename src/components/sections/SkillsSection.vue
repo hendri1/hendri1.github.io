@@ -10,7 +10,7 @@ const { skillGroups, education } = usePortfolio()
   <section id="skills" data-testid="skills" class="relative mx-auto max-w-6xl px-4 py-24 sm:px-8">
     <ParallaxText text="STACK" position="-top-10 -left-4" :amount="0.55" />
     <SectionHeading
-      eyebrow="05 / Skills"
+      eyebrow="06 / Capabilities"
       title="Tools of the trade"
       subtitle="Frontend-deep, full-stack-aware. Years reflect hands-on experience."
     />

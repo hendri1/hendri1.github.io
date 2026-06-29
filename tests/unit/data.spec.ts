@@ -1,5 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { profile, experiences, projects, skillGroups, education } from '@/data/cv'
+import {
+  profile,
+  experiences,
+  projects,
+  skillGroups,
+  education,
+  services,
+  process,
+  clients,
+} from '@/data/cv'
 
 /** Collect human-readable strings, skipping date value objects. */
 function collectText(value: unknown, acc: string[] = []): string[] {
@@ -37,9 +46,30 @@ describe('cv data', () => {
     expect(projects.every((p) => p.order > 0)).toBe(true)
   })
 
+  it('frames the business profile with a value proposition and services', () => {
+    expect(profile.valueProp.length).toBeGreaterThan(0)
+    expect(profile.valuePropSub).toContain('micro-frontends')
+    expect(services.length).toBeGreaterThanOrEqual(4)
+    expect(services.every((s) => s.capabilities.length > 0)).toBe(true)
+  })
+
+  it('describes a clear engagement process and lists clients', () => {
+    expect(process.length).toBeGreaterThanOrEqual(3)
+    expect(clients.some((c) => c.name === 'Mekari')).toBe(true)
+  })
+
   // --- Privacy guardrail: the public site must contain NO PII ---
   it('contains no personally identifiable contact data (phone / street address)', () => {
-    const text = collectText({ profile, experiences, projects, skillGroups, education }).join(' \n ')
+    const text = collectText({
+      profile,
+      experiences,
+      projects,
+      skillGroups,
+      education,
+      services,
+      process,
+      clients,
+    }).join(' \n ')
     expect(text).not.toMatch(/\+?\d[\d\s().-]{7,}\d/)
     expect(text).not.toContain('+62')
     expect(text).not.toMatch(/\bJl\.?\b/i)

@@ -14,6 +14,11 @@ export type IconName =
   | 'sparkles'
   | 'copy'
   | 'check'
+  | 'layers'
+  | 'grid'
+  | 'git-branch'
+  | 'users'
+  | 'arrow-right'
 
 export const ICON_PATHS: Record<IconName, string> = {
   github:
@@ -37,4 +42,12 @@ export const ICON_PATHS: Record<IconName, string> = {
     '<path d="M9.94 14.06A2 2 0 0 0 8.5 12.6l-5.1-1.3 5.1-1.3A2 2 0 0 0 9.94 8.5l1.3-5.1 1.3 5.1a2 2 0 0 0 1.46 1.5l5.1 1.3-5.1 1.3a2 2 0 0 0-1.46 1.46l-1.3 5.1z"/>',
   copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
+  layers:
+    '<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m6.08 9.5-3.49 1.59a1 1 0 0 0 0 1.83l8.59 3.9a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83L17.92 9.5"/><path d="m6.08 14.5-3.49 1.59a1 1 0 0 0 0 1.83l8.59 3.9a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.49-1.59"/>',
+  grid: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+  'git-branch':
+    '<line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>',
+  users:
+    '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  'arrow-right': '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
 }

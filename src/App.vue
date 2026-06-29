@@ -3,9 +3,12 @@ import { onMounted, onUnmounted } from 'vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import HeroSection from '@/components/sections/HeroSection.vue'
+import TrustedBy from '@/components/sections/TrustedBy.vue'
+import ServicesSection from '@/components/sections/ServicesSection.vue'
 import AboutSection from '@/components/sections/AboutSection.vue'
 import ExperienceSection from '@/components/sections/ExperienceSection.vue'
 import ProjectsSection from '@/components/sections/ProjectsSection.vue'
+import ProcessSection from '@/components/sections/ProcessSection.vue'
 import SkillsSection from '@/components/sections/SkillsSection.vue'
 import ContactSection from '@/components/sections/ContactSection.vue'
 import MarqueeStrip from '@/components/fx/MarqueeStrip.vue'
@@ -35,10 +38,13 @@ onUnmounted(() => destroySmoothScroll())
 
   <main data-testid="app-main" class="relative z-10">
     <HeroSection />
-    <MarqueeStrip />
-    <AboutSection />
-    <ExperienceSection />
+    <TrustedBy />
+    <ServicesSection />
     <ProjectsSection />
+    <MarqueeStrip />
+    <ProcessSection />
+    <ExperienceSection />
+    <AboutSection />
     <SkillsSection />
     <ContactSection />
   </main>

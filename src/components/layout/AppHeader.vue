@@ -11,10 +11,10 @@ const calendlyUrl = computed(
 )
 
 const links = [
-  { label: 'About', href: '#about', id: 'about' },
-  { label: 'Experience', href: '#experience', id: 'experience' },
+  { label: 'Services', href: '#services', id: 'services' },
   { label: 'Work', href: '#work', id: 'work' },
-  { label: 'Skills', href: '#skills', id: 'skills' },
+  { label: 'Process', href: '#process', id: 'process' },
+  { label: 'Experience', href: '#experience', id: 'experience' },
   { label: 'Contact', href: '#contact', id: 'contact' },
 ]
 
