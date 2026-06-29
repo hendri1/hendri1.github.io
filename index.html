@@ -77,6 +77,19 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      // Belt-and-suspenders: drop any leftover service worker / caches from the
+      // previous Create React App site so the page never serves stale assets.
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+          .getRegistrations?.()
+          .then((regs) => regs.forEach((reg) => reg.unregister()))
+          .catch(() => {})
+        if (window.caches) {
+          caches.keys().then((keys) => keys.forEach((k) => caches.delete(k))).catch(() => {})
+        }
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
