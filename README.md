@@ -18,40 +18,36 @@ A fast, accessible, dark-first single-page site.
 | Node           | **24 LTS** (`.nvmrc`)                             |
 | Hosting        | **GitHub Pages** (live) · **Vercel** (one-click)  |
 
-## Architecture (Clean Architecture)
+## Architecture
 
-Dependencies point inwards — outer layers depend on inner ones, never the reverse.
+A flat, idiomatic Vue layout — data + types + pure utils, consumed by
+components through one composable. Logic stays out of components and is
+unit-tested; the UI layer is presentational.
 
 ```
 src/
-├── domain/                 # Enterprise rules — pure, framework-free
-│   ├── entities/           #   Profile, Experience, Project, Skill, Education
-│   ├── value-objects/      #   DateRange (durations, labels)
-│   └── repositories/       #   ProfileRepository (port / interface)
-├── application/            # Use cases + presentation-ready view models
-│   ├── use-cases/          #   GetExperienceTimeline, GetFeaturedProjects, …
-│   └── view-models/
-├── infrastructure/         # Concrete adapters
-│   ├── data/               #   cv.data.ts — the CV content (NO PII)
-│   └── repositories/       #   StaticProfileRepository (implements the port)
-├── presentation/           # Vue layer (dumb components)
-│   ├── components/          (layout · sections · ui)
-│   ├── composables/         (useTheme, usePortfolio)
-│   └── directives/          (v-reveal scroll animation)
-├── composition-root.ts     # Dependency injection wiring
-└── main.ts                 # Entry
+├── data/cv.ts          # single source of truth — the CV content (NO PII)
+├── types/portfolio.ts  # entity + view-model interfaces
+├── utils/
+│   ├── dateRange.ts    #   DateRange value object (durations, labels)
+│   └── portfolio.ts    #   pure view-model builders (timeline, projects, …)
+├── composables/        # usePortfolio (facade), useTheme, useSmoothScroll
+├── directives/         # v-reveal, v-parallax, v-magnetic, v-tilt
+├── components/         # layout · sections · ui · fx (presentational)
+├── App.vue
+└── main.ts
 ```
 
-Swapping the static data for an HTTP/CMS source means writing one new
-`ProfileRepository` implementation and changing one line in `composition-root.ts`
-— no domain, application, or UI changes.
+`usePortfolio()` reads `data/cv.ts` through the pure functions in
+`utils/portfolio.ts`. Swapping the static data for an HTTP/CMS source is a
+change isolated to `data/` + `usePortfolio` — components are untouched.
 
 ## Privacy
 
 The site contains **no personally identifiable contact data** (no phone number,
 no home address). Contact is via a Calendly booking embed, email, LinkedIn and
-GitHub. A unit test (`StaticProfileRepository.spec.ts`) and an E2E test guard
-against PII regressions.
+GitHub. A unit test (`tests/unit/data.spec.ts`) and an E2E test guard against
+PII regressions.
 
 ## Scripts
 
