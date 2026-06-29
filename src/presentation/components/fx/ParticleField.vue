@@ -5,15 +5,21 @@ const canvas = ref<HTMLCanvasElement | null>(null)
 let raf = 0
 let cleanup: (() => void) | null = null
 
-interface P {
+interface Star {
   x: number
   y: number
-  vx: number
-  vy: number
+  z: number // depth 0..1 (parallax + size)
   r: number
-  a: number
-  warm: boolean
+  tw: number // twinkle phase
+  c: number // colour index
 }
+
+// ice, cyan, magenta
+const COLORS = [
+  [210, 224, 245],
+  [45, 226, 230],
+  [255, 46, 151],
+]
 
 onMounted(() => {
   const el = canvas.value
@@ -25,12 +31,9 @@ onMounted(() => {
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
   let w = 0
   let h = 0
-  let particles: P[] = []
-  const pointer = { x: -9999, y: -9999, active: false }
+  let stars: Star[] = []
+  const pointer = { x: 0, y: 0, active: false }
   let visible = true
-
-  const ACCENT = [255, 91, 35] // #FF5B23
-  const SOFT = [232, 176, 75] // #E8B04B
 
   const resize = () => {
     const rect = el.parentElement?.getBoundingClientRect()
@@ -42,74 +45,54 @@ onMounted(() => {
     el.style.height = `${h}px`
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-    const count = Math.round(Math.min(140, Math.max(50, (w * h) / 14000)))
-    particles = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: -0.15 - Math.random() * 0.4,
-      r: 0.6 + Math.random() * 1.8,
-      a: 0.15 + Math.random() * 0.5,
-      warm: Math.random() > 0.7,
-    }))
-  }
-
-  const drawStatic = () => {
-    ctx.clearRect(0, 0, w, h)
-    ctx.globalCompositeOperation = 'lighter'
-    for (const p of particles) {
-      const [r, g, b] = p.warm ? SOFT : ACCENT
-      ctx.fillStyle = `rgba(${r},${g},${b},${p.a})`
-      ctx.beginPath()
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-      ctx.fill()
-    }
-    ctx.globalCompositeOperation = 'source-over'
+    const count = Math.round(Math.min(180, Math.max(70, (w * h) / 11000)))
+    stars = Array.from({ length: count }, () => {
+      const z = Math.random()
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z,
+        r: 0.4 + z * 1.7,
+        tw: Math.random() * Math.PI * 2,
+        c: Math.random() > 0.9 ? (Math.random() > 0.5 ? 2 : 1) : 0,
+      }
+    })
   }
 
   let t = 0
-  const tick = () => {
-    raf = requestAnimationFrame(tick)
-    if (!visible) return
-    t += 0.004
+  const draw = (animate: boolean) => {
     ctx.clearRect(0, 0, w, h)
     ctx.globalCompositeOperation = 'lighter'
-
-    for (const p of particles) {
-      // gentle flow field
-      p.x += p.vx + Math.sin(p.y * 0.01 + t) * 0.18
-      p.y += p.vy
-
-      // cursor attraction (local light source)
-      if (pointer.active) {
-        const dx = pointer.x - p.x
-        const dy = pointer.y - p.y
-        const d2 = dx * dx + dy * dy
-        if (d2 < 26000) {
-          const f = (1 - d2 / 26000) * 0.04
-          p.x += dx * f
-          p.y += dy * f
+    const ox = pointer.active ? (pointer.x - w / 2) : 0
+    const oy = pointer.active ? (pointer.y - h / 2) : 0
+    for (const s of stars) {
+      if (animate) {
+        s.y += 0.04 + s.z * 0.12 // slow drift
+        if (s.y > h + 4) {
+          s.y = -4
+          s.x = Math.random() * w
         }
+        s.tw += 0.02 + s.z * 0.03
       }
-
-      // wrap
-      if (p.y < -10) {
-        p.y = h + 10
-        p.x = Math.random() * w
-      }
-      if (p.x < -10) p.x = w + 10
-      if (p.x > w + 10) p.x = -10
-
-      const near = pointer.active
-        ? Math.max(0, 1 - ((pointer.x - p.x) ** 2 + (pointer.y - p.y) ** 2) / 40000)
-        : 0
-      const [r, g, b] = p.warm ? SOFT : ACCENT
-      ctx.fillStyle = `rgba(${r},${g},${b},${Math.min(1, p.a + near * 0.5)})`
+      const twinkle = animate ? 0.55 + 0.45 * Math.sin(s.tw) : 0.8
+      // parallax: deeper stars shift less
+      const px = s.x + (ox * s.z * 0.02)
+      const py = s.y + (oy * s.z * 0.02)
+      const [r, g, b] = COLORS[s.c]
+      ctx.fillStyle = `rgba(${r},${g},${b},${(0.25 + s.z * 0.5) * twinkle})`
       ctx.beginPath()
-      ctx.arc(p.x, p.y, p.r + near * 1.5, 0, Math.PI * 2)
+      ctx.arc(px, py, s.r, 0, Math.PI * 2)
       ctx.fill()
     }
     ctx.globalCompositeOperation = 'source-over'
+  }
+
+  t = 0
+  const tick = () => {
+    raf = requestAnimationFrame(tick)
+    if (!visible) return
+    t += 1
+    draw(true)
   }
 
   const onMove = (e: MouseEvent) => {
@@ -118,13 +101,9 @@ onMounted(() => {
     pointer.y = e.clientY - rect.top
     pointer.active = true
   }
-  const onLeave = () => {
-    pointer.active = false
-  }
   const onVisibility = () => {
     visible = !document.hidden
   }
-
   const io = new IntersectionObserver(
     (entries) => {
       visible = entries[0]?.isIntersecting ?? true
@@ -135,21 +114,16 @@ onMounted(() => {
   resize()
   window.addEventListener('resize', resize)
   window.addEventListener('mousemove', onMove, { passive: true })
-  window.addEventListener('mouseout', onLeave)
   document.addEventListener('visibilitychange', onVisibility)
   io.observe(el)
 
-  if (reduce) {
-    drawStatic()
-  } else {
-    raf = requestAnimationFrame(tick)
-  }
+  if (reduce) draw(false)
+  else raf = requestAnimationFrame(tick)
 
   cleanup = () => {
     cancelAnimationFrame(raf)
     window.removeEventListener('resize', resize)
     window.removeEventListener('mousemove', onMove)
-    window.removeEventListener('mouseout', onLeave)
     document.removeEventListener('visibilitychange', onVisibility)
     io.disconnect()
   }

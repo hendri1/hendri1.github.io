@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DecodeText from './DecodeText.vue'
 defineProps<{ eyebrow: string; title: string; subtitle?: string }>()
 </script>
 
@@ -12,7 +13,7 @@ defineProps<{ eyebrow: string; title: string; subtitle?: string }>()
       class="mt-4 font-semibold tracking-tight text-fg"
       style="font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05; letter-spacing: -0.02em"
     >
-      {{ title }}
+      <DecodeText :text="title" />
     </h2>
     <p v-if="subtitle" class="mt-4 text-base text-muted">{{ subtitle }}</p>
   </header>

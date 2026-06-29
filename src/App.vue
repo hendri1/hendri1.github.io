@@ -19,6 +19,7 @@ onUnmounted(() => destroySmoothScroll())
 
 <template>
   <div class="fx-grid" aria-hidden="true" />
+  <div class="fx-scanlines" aria-hidden="true" />
   <div class="fx-grain" aria-hidden="true" />
   <ScrollProgress />
   <CustomCursor />
