@@ -1,5 +1,9 @@
 import { test, expect } from '@playwright/test'
 
+test.beforeEach(async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+})
+
 test('defaults to dark theme and toggles to light (persisted)', async ({ page }) => {
   await page.goto('/')
   const html = page.locator('html')

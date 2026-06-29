@@ -3,12 +3,17 @@ defineProps<{ eyebrow: string; title: string; subtitle?: string }>()
 </script>
 
 <template>
-  <header class="mb-10 max-w-2xl" v-reveal>
-    <p class="mb-3 flex items-center gap-2 text-sm font-semibold tracking-wide text-accent uppercase">
-      <span class="h-px w-6 bg-accent/60" aria-hidden="true" />
+  <header class="mb-12 max-w-2xl" v-reveal>
+    <p class="kicker flex items-center gap-2">
+      <span class="inline-block h-px w-8 bg-accent" aria-hidden="true" />
       {{ eyebrow }}
     </p>
-    <h2 class="text-3xl font-bold tracking-tight text-fg sm:text-4xl">{{ title }}</h2>
-    <p v-if="subtitle" class="mt-3 text-base text-muted">{{ subtitle }}</p>
+    <h2
+      class="mt-4 font-semibold tracking-tight text-fg"
+      style="font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05; letter-spacing: -0.02em"
+    >
+      {{ title }}
+    </h2>
+    <p v-if="subtitle" class="mt-4 text-base text-muted">{{ subtitle }}</p>
   </header>
 </template>
