@@ -1,46 +1,51 @@
 @import 'tailwindcss';
 
-/* Class-based dark mode (toggled on <html>) — this design is dark-first. */
+/* Class-based dark mode (toggled on <html>) — sci-fi is dark-first. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, 'JetBrains Mono', 'SFMono-Regular', monospace;
 
-  /* Semantic tokens resolved from CSS variables that flip with the theme. */
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface2: var(--surface-2);
   --color-line: var(--line);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
+  --color-accent: var(--accent); /* cyan — primary HUD */
+  --color-accent-soft: var(--accent-soft); /* soft cyan */
+  --color-accent2: var(--accent-2); /* magenta — secondary */
+  --color-accent3: var(--accent-3); /* lime — status/online */
 }
 
 @layer base {
-  /* Light — warm parchment (default; still no slate/neon). */
+  /* Light — "blueprint": pale ice + ink + cyan. */
   :root {
-    --bg: #f4f2ed;
-    --surface: #fbfaf6;
-    --surface-2: #efebe2;
-    --line: #e0dacd;
-    --fg: #1a1611;
-    --muted: #6b6457;
-    --accent: #d84f1c;
-    --accent-soft: #b97e22;
+    --bg: #eef2fb;
+    --surface: #ffffff;
+    --surface-2: #e6ecfa;
+    --line: #cdd8ee;
+    --fg: #0b1020;
+    --muted: #586079;
+    --accent: #0892a5;
+    --accent-soft: #1bb6c9;
+    --accent-2: #d6248a;
+    --accent-3: #4f9e1f;
   }
 
-  /* Dark — "terminal noir": warm carbon + amber signal (default via <html class="dark">). */
+  /* Dark — "deep space" HUD. (default via <html class="dark">) */
   .dark {
-    --bg: #0c0a08;
-    --surface: #141009;
-    --surface-2: #1e1810;
-    --line: #2a2118;
-    --fg: #f2ebdd;
-    --muted: #9a9183;
-    --accent: #ff5b23;
-    --accent-soft: #e8b04b;
+    --bg: #06070d;
+    --surface: #0c0f1a;
+    --surface-2: #121726;
+    --line: #1e2740;
+    --fg: #dce6f5;
+    --muted: #6e7a93;
+    --accent: #2de2e6;
+    --accent-soft: #7af5f7;
+    --accent-2: #ff2e97;
+    --accent-3: #b6ff3c;
   }
 
   html {
@@ -55,40 +60,37 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    font-feature-settings: 'ss01', 'cv01';
+    overflow-x: hidden;
   }
 
   ::selection {
-    background-color: color-mix(in oklab, var(--color-accent) 40%, transparent);
+    background-color: color-mix(in oklab, var(--color-accent) 45%, transparent);
     color: var(--color-fg);
   }
 
   *:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
-    border-radius: 2px;
   }
 
-  /* Tabular figures for all the mono metadata. */
   .font-mono {
     font-variant-numeric: tabular-nums;
   }
 }
 
 @layer components {
-  /* Mono micro-label: "— 02 / SELECTED WORK" */
   .kicker {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-muted);
+    color: var(--color-accent);
   }
 
-  /* Scroll reveal (IntersectionObserver via v-reveal). */
+  /* Reveal (IntersectionObserver via v-reveal). */
   .reveal {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(22px);
     transition:
       opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
@@ -99,7 +101,6 @@
     transform: none;
   }
 
-  /* Animated underline for links. */
   .link-underline {
     background-image: linear-gradient(var(--color-accent), var(--color-accent));
     background-position: 0 100%;
@@ -111,7 +112,37 @@
     background-size: 100% 1.5px;
   }
 
-  /* Faint instrument grid + film grain overlays (fixed, non-interactive). */
+  /* HUD corner brackets on a container. */
+  .hud {
+    position: relative;
+  }
+  .hud::before,
+  .hud::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 60%, transparent);
+    pointer-events: none;
+  }
+  .hud::before {
+    top: -1px;
+    left: -1px;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  .hud::after {
+    right: -1px;
+    bottom: -1px;
+    border-left: 0;
+    border-top: 0;
+  }
+
+  .glow {
+    text-shadow: 0 0 18px color-mix(in oklab, var(--color-accent) 55%, transparent);
+  }
+
+  /* Global FX overlays. */
   .fx-grid {
     position: fixed;
     inset: 0;
@@ -120,21 +151,34 @@
     background-image:
       linear-gradient(to right, var(--color-line) 1px, transparent 1px),
       linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
-    background-size: clamp(60px, 8vw, 120px) clamp(60px, 8vw, 120px);
-    opacity: 0.25;
-    mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 30%, transparent 80%);
+    background-size: clamp(48px, 6vw, 96px) clamp(48px, 6vw, 96px);
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 120% 80% at 50% 0%, #000 25%, transparent 75%);
+  }
+  .fx-scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.5;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 2px,
+      color-mix(in oklab, var(--color-fg) 4%, transparent) 2px 3px
+    );
+    mix-blend-mode: overlay;
   }
   .fx-grain {
     position: fixed;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.04;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* Custom cursor (desktop, pointer-fine only). */
+  /* Reticle cursor. */
   .cursor-dot,
   .cursor-ring {
     position: fixed;
@@ -142,28 +186,52 @@
     left: 0;
     z-index: 90;
     pointer-events: none;
-    border-radius: 9999px;
     translate: -50% -50%;
-    mix-blend-mode: difference;
   }
   .cursor-dot {
-    width: 6px;
-    height: 6px;
-    background: #fff;
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 10px var(--color-accent);
   }
   .cursor-ring {
-    width: 34px;
-    height: 34px;
-    border: 1px solid #fff;
+    width: 30px;
+    height: 30px;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 70%, transparent);
+    border-radius: 9999px;
     transition:
       width 0.25s ease,
       height 0.25s ease,
+      border-radius 0.25s ease,
       background-color 0.25s ease;
   }
+  /* crosshair ticks */
+  .cursor-ring::before,
+  .cursor-ring::after {
+    content: '';
+    position: absolute;
+    background: color-mix(in oklab, var(--color-accent) 70%, transparent);
+  }
+  .cursor-ring::before {
+    top: 50%;
+    left: -6px;
+    right: -6px;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+  .cursor-ring::after {
+    left: 50%;
+    top: -6px;
+    bottom: -6px;
+    width: 1px;
+    transform: translateX(-50%);
+  }
   .cursor-ring.is-hover {
-    width: 56px;
-    height: 56px;
-    background: rgba(255, 255, 255, 0.08);
+    width: 54px;
+    height: 54px;
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--color-accent) 8%, transparent);
   }
   @media (hover: none), (pointer: coarse) {
     .cursor-dot,
@@ -171,7 +239,6 @@
       display: none;
     }
   }
-  /* Hide the native cursor only once the custom one is mounted (fine pointers). */
   @media (hover: hover) and (pointer: fine) {
     .has-custom-cursor,
     .has-custom-cursor a,
@@ -179,6 +246,38 @@
       cursor: none;
     }
   }
+}
+
+/* Hero name glitch on hover (RGB split). */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+}
+.glitch {
+  position: relative;
+}
+.glitch:hover {
+  animation: glitch 0.3s steps(2) infinite;
+}
+.glitch:hover::before,
+.glitch:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch:hover::before {
+  color: var(--color-accent);
+  transform: translate(-2px, 0);
+  mix-blend-mode: screen;
+}
+.glitch:hover::after {
+  color: var(--color-accent2);
+  transform: translate(2px, 0);
+  mix-blend-mode: screen;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -190,7 +289,11 @@
     transform: none;
     transition: none;
   }
-  .fx-grain {
+  .fx-grain,
+  .fx-scanlines {
     display: none;
+  }
+  .glitch:hover {
+    animation: none;
   }
 }
