@@ -12,6 +12,8 @@ export type IconName =
   | 'close'
   | 'globe'
   | 'sparkles'
+  | 'copy'
+  | 'check'
 
 export const ICON_PATHS: Record<IconName, string> = {
   github:
@@ -33,4 +35,6 @@ export const ICON_PATHS: Record<IconName, string> = {
     '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
   sparkles:
     '<path d="M9.94 14.06A2 2 0 0 0 8.5 12.6l-5.1-1.3 5.1-1.3A2 2 0 0 0 9.94 8.5l1.3-5.1 1.3 5.1a2 2 0 0 0 1.46 1.5l5.1 1.3-5.1 1.3a2 2 0 0 0-1.46 1.46l-1.3 5.1z"/>',
+  copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
 }

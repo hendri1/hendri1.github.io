@@ -5,6 +5,8 @@ import { gsap } from 'gsap'
 const dot = ref<HTMLElement | null>(null)
 const ring = ref<HTMLElement | null>(null)
 const hover = ref(false)
+const pressed = ref(false)
+const label = ref('')
 let cleanup: (() => void) | null = null
 
 onMounted(() => {
@@ -22,14 +24,27 @@ onMounted(() => {
     dotY(e.clientY)
     ringX(e.clientX)
     ringY(e.clientY)
-    const el = e.target as HTMLElement | null
-    hover.value = !!el?.closest('a, button, [data-cursor]')
+    const el = (e.target as HTMLElement | null)?.closest<HTMLElement>('a, button, [data-cursor]')
+    hover.value = !!el
+    // A non-empty data-cursor value becomes a verb label ("copy", "open mail").
+    const verb = el?.getAttribute('data-cursor')
+    label.value = verb && verb.trim().length ? verb.trim() : ''
   }
 
+  const onDown = () => (pressed.value = true)
+  const onUp = () => (pressed.value = false)
+
   window.addEventListener('mousemove', onMove, { passive: true })
+  window.addEventListener('mousedown', onDown, { passive: true })
+  window.addEventListener('mouseup', onUp, { passive: true })
+  // Reset press state if the pointer leaves the window mid-click.
+  window.addEventListener('blur', onUp)
   document.documentElement.classList.add('has-custom-cursor')
   cleanup = () => {
     window.removeEventListener('mousemove', onMove)
+    window.removeEventListener('mousedown', onDown)
+    window.removeEventListener('mouseup', onUp)
+    window.removeEventListener('blur', onUp)
     document.documentElement.classList.remove('has-custom-cursor')
   }
 })
@@ -38,6 +53,13 @@ onUnmounted(() => cleanup?.())
 </script>
 
 <template>
-  <div ref="dot" class="cursor-dot" aria-hidden="true" />
-  <div ref="ring" class="cursor-ring" :class="{ 'is-hover': hover }" aria-hidden="true" />
+  <div ref="dot" class="cursor-dot" :class="{ 'is-pressed': pressed }" aria-hidden="true" />
+  <div
+    ref="ring"
+    class="cursor-ring"
+    :class="{ 'is-hover': hover, 'is-pressed': pressed, 'has-label': label }"
+    aria-hidden="true"
+  >
+    <span v-if="label" class="cursor-label">{{ label }}</span>
+  </div>
 </template>
