@@ -22,8 +22,8 @@ test('copy-email button flips to a confirmed state', async ({ page, context }) =
 })
 
 test('primary nav reflects the active section via aria-current', async ({ page }) => {
-  await page.locator('#about').scrollIntoViewIfNeeded()
-  await expect(page.getByTestId('nav-about')).toHaveAttribute('aria-current', 'true')
+  await page.locator('#services').scrollIntoViewIfNeeded()
+  await expect(page.getByTestId('nav-services')).toHaveAttribute('aria-current', 'true')
 
   await page.locator('#contact').scrollIntoViewIfNeeded()
   await expect(page.getByTestId('nav-contact')).toHaveAttribute('aria-current', 'true')

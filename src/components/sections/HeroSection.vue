@@ -103,7 +103,7 @@ onUnmounted(() => {
       class="pointer-events-none absolute inset-x-4 top-20 flex justify-between font-mono text-[0.65rem] tracking-widest text-muted uppercase sm:inset-x-8"
       aria-hidden="true"
     >
-      <span data-boot-hud>SYS // PORTFOLIO.v1</span>
+      <span data-boot-hud>FRONTEND ENGINEERING · CONSULTING</span>
       <span
         data-boot-hud
         data-testid="hero-status"
@@ -117,39 +117,47 @@ onUnmounted(() => {
       <div class="flex items-start justify-between gap-4">
         <p data-boot="kicker" class="kicker flex items-center gap-2">
           <span class="inline-block h-px w-8 bg-accent" aria-hidden="true" />
-          <DecodeText text="01 / Senior Frontend Engineer · Mekari" />
+          <DecodeText text="Senior Frontend Engineer · 10+ years" />
         </p>
         <div class="hidden text-right sm:block">
-          <p class="font-mono text-xs text-muted">LAT -6.91 · LON 107.61</p>
+          <p class="font-mono text-xs text-muted">BANDUNG, ID</p>
           <p class="font-mono text-xs text-accent" data-testid="local-clock">{{ clock }} WIB</p>
         </div>
       </div>
 
+      <!-- Value proposition leads — this is a business profile, not a résumé. -->
       <h1
         data-boot="name"
-        data-testid="hero-name"
-        class="glitch glow mt-8 font-semibold tracking-tight uppercase"
-        :data-text="profile.name"
-        style="font-size: clamp(3rem, 11vw, 9rem); line-height: 0.9; letter-spacing: -0.03em"
+        data-testid="hero-valueprop"
+        class="glow mt-8 max-w-4xl font-semibold tracking-tight text-fg"
+        style="font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: 1.03; letter-spacing: -0.03em"
       >
-        {{ profile.name }}
+        {{ profile.valueProp }}
       </h1>
 
+      <!-- Name credit + availability (one boot group). -->
       <p
-        v-if="profile.availableForWork"
         data-boot="badge"
-        data-testid="availability-badge"
-        class="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-wide text-muted uppercase"
+        class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm"
       >
-        <span class="relative flex size-2">
-          <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent3 opacity-70" />
-          <span class="relative inline-flex size-2 rounded-full bg-accent3" />
+        <span class="font-medium text-fg" data-testid="hero-name">{{ profile.name }}</span>
+        <span class="text-accent" aria-hidden="true">/</span>
+        <span class="text-muted">{{ profile.title }}</span>
+        <span
+          v-if="profile.availableForWork"
+          data-testid="availability-badge"
+          class="inline-flex items-center gap-2 rounded-full border border-accent3/40 px-3 py-1 text-xs tracking-wide text-fg/90 uppercase"
+        >
+          <span class="relative flex size-2">
+            <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent3 opacity-70" />
+            <span class="relative inline-flex size-2 rounded-full bg-accent3" />
+          </span>
+          Available for work
         </span>
-        Open to senior frontend roles
       </p>
 
-      <p data-boot="tagline" data-testid="hero-tagline" class="mt-5 max-w-xl text-lg text-muted sm:text-xl">
-        {{ profile.tagline }}
+      <p data-boot="tagline" data-testid="hero-tagline" class="mt-6 max-w-xl text-lg text-muted sm:text-xl">
+        {{ profile.valuePropSub }}
       </p>
 
       <div data-boot="cta" class="mt-8 flex flex-wrap items-center gap-3">
@@ -159,7 +167,7 @@ onUnmounted(() => {
           target="_blank"
           rel="noopener noreferrer"
           data-testid="hero-cta-call"
-          data-cursor
+          data-cursor="book a call"
           class="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-[#06070d] transition-colors hover:bg-accent-soft"
         >
           <AppIcon name="calendar" :size="18" />
@@ -167,10 +175,19 @@ onUnmounted(() => {
         </a>
         <a
           v-magnetic="0.3"
+          href="#services"
+          data-testid="hero-cta-services"
+          data-cursor
+          class="inline-flex items-center gap-2 rounded-md border border-line px-6 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent"
+        >
+          See what I do
+          <AppIcon name="arrow-right" :size="16" />
+        </a>
+        <a
           href="#work"
           data-testid="hero-cta-work"
           data-cursor
-          class="inline-flex items-center gap-2 rounded-md border border-line px-6 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent"
+          class="inline-flex items-center gap-2 px-2 py-3 text-sm font-medium text-muted transition-colors hover:text-accent"
         >
           View work
           <AppIcon name="arrow-down" :size="16" />

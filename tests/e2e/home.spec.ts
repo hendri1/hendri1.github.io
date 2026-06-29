@@ -13,9 +13,27 @@ test('has the correct document title and hero identity', async ({ page }) => {
 })
 
 test('renders every primary section', async ({ page }) => {
-  for (const id of ['hero', 'about', 'experience', 'work', 'skills', 'contact']) {
+  for (const id of [
+    'hero',
+    'trusted-by',
+    'services',
+    'work',
+    'process',
+    'experience',
+    'about',
+    'skills',
+    'contact',
+  ]) {
     await expect(page.getByTestId(id)).toBeAttached()
   }
+})
+
+test('presents the business-profile value proposition and services', async ({ page }) => {
+  await expect(page.getByTestId('hero-valueprop')).toContainText('scales')
+  await expect(page.getByTestId('services-grid').locator('> article')).toHaveCount(4)
+  await expect(page.getByTestId('service-architecture')).toContainText('Architecture')
+  await expect(page.getByTestId('process-list').locator('> li')).toHaveCount(4)
+  await expect(page.getByTestId('client-list')).toContainText('Mekari')
 })
 
 test('shows the four hero highlight stats', async ({ page }) => {

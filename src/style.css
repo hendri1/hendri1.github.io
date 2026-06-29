@@ -154,7 +154,7 @@
       linear-gradient(to right, var(--color-line) 1px, transparent 1px),
       linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
     background-size: clamp(48px, 6vw, 96px) clamp(48px, 6vw, 96px);
-    opacity: 0.35;
+    opacity: 0.28;
     mask-image: radial-gradient(ellipse 120% 80% at 50% 0%, #000 25%, transparent 75%);
   }
   .fx-scanlines {
@@ -162,7 +162,7 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.22;
     background: repeating-linear-gradient(
       to bottom,
       transparent 0 2px,

@@ -1,4 +1,13 @@
-import { profile, experiences, projects, skillGroups, education } from '@/data/cv'
+import {
+  profile,
+  experiences,
+  projects,
+  skillGroups,
+  education,
+  services,
+  process,
+  clients,
+} from '@/data/cv'
 import {
   buildExperienceTimeline,
   getFeaturedProjects,
@@ -17,5 +26,8 @@ export function usePortfolio() {
     projects: getFeaturedProjects(projects),
     skillGroups,
     education: getEducationHistory(education),
+    services,
+    process,
+    clients,
   }
 }

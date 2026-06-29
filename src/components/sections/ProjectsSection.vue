@@ -61,9 +61,9 @@ onUnmounted(() => mm?.revert())
   <section id="work" ref="root" data-testid="work" class="relative py-24">
     <div class="mx-auto max-w-6xl px-4 sm:px-8">
       <SectionHeading
-        eyebrow="04 / Selected Work"
-        title="Projects & case studies"
-        subtitle="Scroll — the deck slides sideways through each project."
+        eyebrow="02 / Selected work"
+        title="Case studies"
+        subtitle="A few projects that show the work — scroll, the deck slides sideways through each one."
       />
     </div>
 
