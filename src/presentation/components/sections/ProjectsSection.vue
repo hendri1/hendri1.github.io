@@ -5,13 +5,14 @@ import AppIcon from '../ui/AppIcon.vue'
 import { usePortfolio } from '@/presentation/composables/usePortfolio'
 
 const { projects } = usePortfolio()
+const pad = (n: number) => String(n).padStart(2, '0')
 </script>
 
 <template>
-  <section id="work" data-testid="work" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+  <section id="work" data-testid="work" class="mx-auto max-w-6xl px-4 py-24 sm:px-8">
     <SectionHeading
-      eyebrow="Featured Work"
-      title="Selected projects & case studies"
+      eyebrow="04 / Selected Work"
+      title="Projects & case studies"
       subtitle="Highlights from work at Mekari and beyond — architecture, design systems, and products."
     />
 
@@ -20,21 +21,22 @@ const { projects } = usePortfolio()
         v-for="(project, index) in projects"
         :key="project.id"
         v-reveal="index * 60"
+        v-tilt="5"
         :data-testid="`project-${project.id}`"
-        class="group flex flex-col rounded-2xl border border-line bg-card/60 p-6 transition-colors hover:border-accent/40 sm:p-7"
+        data-cursor
+        class="group relative flex flex-col rounded-2xl border border-line bg-surface/40 p-6 transition-colors hover:border-accent/50 sm:p-8"
       >
-        <div class="flex items-center justify-between gap-3">
-          <p class="text-xs font-medium tracking-wide text-accent uppercase">
-            {{ project.context }}
-          </p>
-          <ul class="flex gap-1.5">
+        <div class="flex items-start justify-between gap-3">
+          <span class="font-mono text-sm text-accent">({{ pad(index + 1) }})</span>
+          <ul class="flex flex-wrap justify-end gap-1.5">
             <li v-for="tag in project.tags" :key="tag">
               <TagBadge accent>{{ tag }}</TagBadge>
             </li>
           </ul>
         </div>
 
-        <h3 class="mt-4 text-lg font-semibold text-fg">{{ project.name }}</h3>
+        <p class="mt-5 kicker">{{ project.context }}</p>
+        <h3 class="mt-2 text-xl font-semibold text-fg">{{ project.name }}</h3>
         <p class="mt-1 text-sm font-medium text-muted">{{ project.tagline }}</p>
         <p class="mt-3 flex-1 text-sm leading-relaxed text-fg/80">{{ project.description }}</p>
 
@@ -52,7 +54,8 @@ const { projects } = usePortfolio()
             target="_blank"
             rel="noopener noreferrer"
             :data-testid="`project-link-${project.id}`"
-            class="inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+            data-cursor
+            class="inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-opacity hover:opacity-80"
           >
             {{ link.label }}
             <AppIcon name="external" :size="14" />

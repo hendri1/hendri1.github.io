@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
+  // Disable Lenis/cursor/particle motion for deterministic, fast runs.
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
 })
 

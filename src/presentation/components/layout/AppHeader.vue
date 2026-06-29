@@ -47,14 +47,15 @@ const close = () => {
       <a
         href="#top"
         data-testid="brand"
+        data-cursor
         class="group flex items-center gap-2.5 font-semibold tracking-tight"
         @click="close"
       >
         <span
-          class="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-accent-2 text-sm font-bold text-[#0a0e16]"
+          class="grid size-9 place-items-center rounded-lg bg-accent font-mono text-sm font-bold text-[#0c0a08]"
           >HF</span
         >
-        <span class="hidden text-fg sm:inline">Hendri Faisal</span>
+        <span class="hidden font-mono text-sm text-fg sm:inline">hendri-faisal</span>
       </a>
 
       <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
@@ -63,7 +64,8 @@ const close = () => {
           :key="link.href"
           :href="link.href"
           :data-testid="`nav-${link.label.toLowerCase()}`"
-          class="rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:text-fg"
+          data-cursor
+          class="rounded-lg px-3 py-2 font-mono text-xs tracking-wide text-muted uppercase transition-colors hover:text-accent"
           >{{ link.label }}</a
         >
       </nav>
@@ -75,7 +77,8 @@ const close = () => {
           target="_blank"
           rel="noopener noreferrer"
           data-testid="header-cta"
-          class="hidden items-center gap-2 rounded-full bg-fg px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90 sm:inline-flex"
+          data-cursor
+          class="hidden items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-[#0c0a08] transition-colors hover:bg-accent-soft sm:inline-flex"
         >
           <AppIcon name="calendar" :size="16" />
           Book a call
