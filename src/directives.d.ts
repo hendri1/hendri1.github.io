@@ -1,7 +1,7 @@
-import type { vReveal } from './presentation/directives/reveal'
-import type { vMagnetic } from './presentation/directives/magnetic'
-import type { vTilt } from './presentation/directives/tilt'
-import type { vParallax } from './presentation/directives/parallax'
+import type { vReveal } from './directives/reveal'
+import type { vMagnetic } from './directives/magnetic'
+import type { vTilt } from './directives/tilt'
+import type { vParallax } from './directives/parallax'
 
 declare module 'vue' {
   interface GlobalDirectives {
